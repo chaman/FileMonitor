@@ -34,11 +34,11 @@ send_msg(gchar *m)
 
 
 void
-callback (GFileMonitor        *mon,
-          GFile               *first,
-          GFile               *second,
-          GFileMonitorEvent    event,
-          gpointer             udata)
+callback(GFileMonitor        *mon,
+         GFile               *first,
+         GFile               *second,
+         GFileMonitorEvent    event,
+         gpointer             udata)
 {
     
     gchar *m;
@@ -46,9 +46,9 @@ callback (GFileMonitor        *mon,
     g_assert(first != NULL);
     gchar *filepath;
     filepath = g_file_get_path(first);
-    switch (event) {
+    switch(event) {
         case G_FILE_MONITOR_EVENT_CHANGED:
-            m = g_strdup_printf ("File Content Changed: %s ", filepath);
+            m = g_strdup_printf("File Content Changed: %s ", filepath);
             break;
         case G_FILE_MONITOR_EVENT_DELETED:
             m = g_strdup_printf("File Deleted: %s ", filepath);
@@ -80,17 +80,17 @@ callback (GFileMonitor        *mon,
 
 
 static void
-on_bus_acquired (GDBusConnection *connection,
-                 const gchar     *name,
-                 gpointer         user_data)
+on_bus_acquired(GDBusConnection *connection,
+                const gchar     *name,
+                gpointer         user_data)
 {
 
 }
 
 static void
-on_name_acquired (GDBusConnection *connection,
-                  const gchar     *name,
-                  gpointer         user_data)
+on_name_acquired(GDBusConnection *connection,
+                 const gchar     *name,
+                 gpointer         user_data)
 {
     
     conn = connection;
@@ -104,9 +104,9 @@ on_name_acquired (GDBusConnection *connection,
 }
 
 static void
-on_name_lost (GDBusConnection *connection,
-              const gchar     *name,
-              gpointer         user_data)
+on_name_lost(GDBusConnection *connection,
+             const gchar     *name,
+             gpointer         user_data)
 {
 
 }
@@ -115,7 +115,7 @@ int
 main (int argc, char *argv[])
 {
 
-    if (argc < 2) {
+    if(argc < 2) {
         g_print ("Usage: emitter <directory>\n");
         return 1;
     }
@@ -124,7 +124,7 @@ main (int argc, char *argv[])
     guint owner_id;
     GMainLoop *loop;
     
-    g_type_init ();
+    g_type_init();
     
     file = g_file_new_for_path(argv[1]);
 
@@ -134,21 +134,21 @@ main (int argc, char *argv[])
 
     }
     
-    owner_id = g_bus_own_name (G_BUS_TYPE_SESSION,
-                               "org.filemon.Signal",
-                               G_BUS_NAME_OWNER_FLAGS_REPLACE,
-                               on_bus_acquired,
-                               on_name_acquired,
-                               on_name_lost,
-                               NULL,
-                               NULL);
+    owner_id = g_bus_own_name(G_BUS_TYPE_SESSION,
+                              "org.filemon.Signal",
+                              G_BUS_NAME_OWNER_FLAGS_REPLACE,
+                              on_bus_acquired,
+                              on_name_acquired,
+                              on_name_lost,
+                              NULL,
+                              NULL);
     
                                        
 
-    loop = g_main_loop_new (NULL, FALSE);
-    g_main_loop_run (loop);
-    g_bus_unown_name (owner_id);
-    g_object_unref (mon);
+    loop = g_main_loop_new(NULL, FALSE);
+    g_main_loop_run(loop);
+    g_bus_unown_name(owner_id);
+    g_object_unref(mon);
 
     return 0;
 }
